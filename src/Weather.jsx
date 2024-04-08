@@ -4,7 +4,7 @@ const Weather = () => {
   const [currentDate, setCurrentDate] = useState(getDate());
   const [city, setCity] = useState("");
   const API_KEY = "f354b189aaf77a355d65e2f002046f0b";
-  const REQUEST_URL = `https://api.openweathermap.org/data/2.5/weather?q=Kaduna&appid=${API_KEY}`;
+  const REQUEST_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
 
   function getDate() {
     const todaysDate = new Date();
@@ -15,59 +15,31 @@ const Weather = () => {
     return `${dateOfWeek}/${month}/${year}`;
   }
 
-  function handleInput(e) {
-    setCity(e.target.value);
-    console.log("city name: " + city);
-  }
+  const handleSearch = () => {
+    const cityInput = document.getElementsByClassName("cityInput");
+    if (cityInput.value === "") {
+      return 0;
+    } else {
+      fetch(REQUEST_URL)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
 
-  useEffect(() => {
-    // getCurrentWeather();
-    fetch(REQUEST_URL)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-
-        let Temperature = document.getElementsByClassName("temprature");
-        let Feelslike = document.getElementsByClassName("feelslike");
-        let Clouds = document.getElementsByClassName("clouds");
-        let Humidity = document.getElementsByClassName("humidity");
-        let City_Name = document.getElementsByClassName("currentcity");
-        Temperature[0].innerHTML = Math.floor(data.main.temp - 273.15);
-        Feelslike[0].innerHTML = Math.floor(data.main.feels_like - 273.15);
-        Clouds[0].innerHTML = data.weather[0].description;
-        Humidity[0].innerHTML = data.main.humidity;
-        City_Name[0].innerHTML = data.name + " City";
-      });
-  }, []);
-
-  // function getCurrentWeather(e) {
-  //   fetch(REQUEST_URL)
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-
-  //       let Temperature = document.getElementsByClassName("temprature");
-  //       let Feelslike = document.getElementsByClassName("feelslike");
-  //       let Clouds = document.getElementsByClassName("clouds");
-  //       let Humidity = document.getElementsByClassName("humidity");
-  //       let City_Name = document.getElementsByClassName("currentcity");
-  //       Temperature[0].innerHTML = Math.floor(data.main.temp - 273.15);
-  //       Feelslike[0].innerHTML = Math.floor(data.main.feels_like - 273.15);
-  //       Clouds[0].innerHTML = data.weather[0].description;
-  //       Humidity[0].innerHTML = data.main.humidity;
-  //       City_Name[0].innerHTML = data.name + " City";
-  //     });
-
-  //   // if (e.key === "Enter") {
-  //   //   console.log("'enter' key pressed");
-  //   // } else {
-  //   //   console.log("not enter key");
-  //   // }
-  // }
+          let Temperature = document.getElementsByClassName("temprature");
+          let Feelslike = document.getElementsByClassName("feelslike");
+          let Clouds = document.getElementsByClassName("clouds");
+          let Humidity = document.getElementsByClassName("humidity");
+          let City_Name = document.getElementsByClassName("currentcity");
+          Temperature[0].innerHTML = Math.floor(data.main.temp - 273.15);
+          Feelslike[0].innerHTML = Math.floor(data.main.feels_like - 273.15);
+          Clouds[0].innerHTML = data.weather[0].description;
+          Humidity[0].innerHTML = data.main.humidity;
+          City_Name[0].innerHTML = data.name + " " + data.sys.country;
+        });
+    }
+  };
 
   return (
     <>
@@ -85,20 +57,24 @@ const Weather = () => {
         <p className="weather text-1xl font-semibold tracking-widest text-white italic ml-60">
           {currentDate}
         </p>
-        <span className="weather top-16 ml-10 ">Search for a new city</span>
+        <span className="cityInput weather top-16 ml-10 ">
+          Search for a new city
+        </span>
         <input
           placeholder="Enter City Name"
           className="absolute top-24 ml-10 text-black px-10 py-2 rounded-md outline-none"
           value={city}
-          onChange={handleInput}
+          onChange={(e) => {
+            setCity(e.target.value);
+          }}
           // onKeyDown={handleKeydown}
           // onSubmit={handleInput}
         />
-        <div className="SearchIconDiv absolute w-6 left-10">
+        <div className="SearchIconDiv absolute w-6 left-72">
           <img
             src="https://ouch-cdn2.icons8.com/AJnCJKWQF4zk3jLDQCBaO7hkeyEHYIIHb5YXNWOLtHo/rs:fit:368:378/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9zdmcvOTg2/L2Y0MTk0NDFlLTMz/NTYtNGZmMC04ZmIx/LWE4YzNjY2VkODU0/OC5zdmc.png"
             alt="search icon"
-            // onClick={handleInput}
+            onClick={handleSearch}
           />
         </div>
 
@@ -124,7 +100,7 @@ const Weather = () => {
           <img
             src="https://ouch-cdn2.icons8.com/Z6bj6JFgd5lCkM6aQ1gKouPHx4zzNC6qa50DgEhmbfc/rs:fit:368:367/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMjUz/LzYyZDYwNTc4LTEw/NTQtNGQ3OS1hZTg4/LWZiM2YwMjgwNGZl/Zi5wbmc.png"
             alt="weather condition png"
-            width={"95%"}
+            width={"76%"}
           />
         </div>
         {/* <div
@@ -139,9 +115,9 @@ const Weather = () => {
         </div> */}
         <span
           className="absolute top-96 text-4xl text-white"
-          style={{ marginLeft: "80%" }}
+          style={{ marginLeft: "77%" }}
         >
-          <span className="currentcity">CITY CITY</span>
+          <span className="currentcity">CITY</span>
         </span>
       </div>
     </>
