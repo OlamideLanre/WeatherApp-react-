@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 const Weather = () => {
   const [currentDate, setCurrentDate] = useState(getDate());
   const [city, setCity] = useState("");
+  const [error, setError] = useState(null);
   const API_KEY = "f354b189aaf77a355d65e2f002046f0b";
   const REQUEST_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
 
@@ -22,21 +23,29 @@ const Weather = () => {
     } else {
       fetch(REQUEST_URL)
         .then((response) => {
-          return response.json();
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw Error("something went wrong");
+          }
         })
         .then((data) => {
           console.log(data);
+          setError(null);
 
           let Temperature = document.getElementsByClassName("temprature");
           let Feelslike = document.getElementsByClassName("feelslike");
-          let Clouds = document.getElementsByClassName("clouds");
+          let wind = document.getElementsByClassName("clouds");
           let Humidity = document.getElementsByClassName("humidity");
           let City_Name = document.getElementsByClassName("currentcity");
           Temperature[0].innerHTML = Math.floor(data.main.temp - 273.15);
           Feelslike[0].innerHTML = Math.floor(data.main.feels_like - 273.15);
-          Clouds[0].innerHTML = data.weather[0].description;
-          Humidity[0].innerHTML = data.main.humidity;
+          wind[0].innerHTML = data.wind.speed + " km/h";
+          Humidity[0].innerHTML = data.main.humidity + " %";
           City_Name[0].innerHTML = data.name + " " + data.sys.country;
+        })
+        .catch((err) => {
+          setError(err.message);
         });
     }
   };
@@ -67,8 +76,11 @@ const Weather = () => {
           onChange={(e) => {
             setCity(e.target.value);
           }}
-          // onKeyDown={handleKeydown}
-          // onSubmit={handleInput}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
         />
         <div className="SearchIconDiv absolute w-6 left-72">
           <img
@@ -89,11 +101,12 @@ const Weather = () => {
           </p>
 
           <p className=" mt-8">
-            Clouds: <span className="clouds">NA</span>
+            Wind Speed: <span className="clouds">NA</span>
           </p>
           <p>
             Humidity: <span className="humidity">NA</span>
           </p>
+          {error && <div style={{ color: "red" }}>{error}</div>}
         </div>
 
         <div className="weatherCondition top-16 absolute">
