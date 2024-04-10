@@ -4,6 +4,7 @@ const Weather = () => {
   const [currentDate, setCurrentDate] = useState(getDate());
   const [city, setCity] = useState("");
   const [error, setError] = useState(null);
+  const [bgImage, setBgImage] = useState("mainBG.jpg");
   const API_KEY = "f354b189aaf77a355d65e2f002046f0b";
   const REQUEST_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
 
@@ -16,6 +17,16 @@ const Weather = () => {
     return `${dateOfWeek}/${month}/${year}`;
   }
 
+  // SETTING BACKGROUND IMAGES
+  let clearSkyimg = "mainBG.jpg";
+  let fewClouds = "fewCloudsBG.jpg";
+  let rainImg = "rainBG.jpg";
+  let ThunderStorm = "thunderstormBG.jpg";
+  let scatteredClouds = "scatteredCloudsBG.jpg";
+  let brokenCLouds = "brokenCloudsBG.jpg";
+  let snowBg = "snowBG.jpg";
+  let overcast = "overcastBG.avif";
+
   const handleSearch = () => {
     const cityInput = document.getElementsByClassName("cityInput");
     if (cityInput.value === "") {
@@ -25,9 +36,10 @@ const Weather = () => {
         .then((response) => {
           if (response.ok) {
             return response.json();
-          } else {
-            throw Error("something went wrong");
           }
+          //  else {
+          //   throw Error("something went wrong");
+          // }
         })
         .then((data) => {
           console.log(data);
@@ -38,14 +50,39 @@ const Weather = () => {
           let wind = document.getElementsByClassName("clouds");
           let Humidity = document.getElementsByClassName("humidity");
           let City_Name = document.getElementsByClassName("currentcity");
+          let description = document.getElementsByClassName("description");
           Temperature[0].innerHTML = Math.floor(data.main.temp - 273.15);
           Feelslike[0].innerHTML = Math.floor(data.main.feels_like - 273.15);
           wind[0].innerHTML = data.wind.speed + " km/h";
           Humidity[0].innerHTML = data.main.humidity + " %";
           City_Name[0].innerHTML = data.name + " " + data.sys.country;
+          description[0].innerHTML = data.weather[0].description;
+
+          if (data.weather[0].description === "clear sky") {
+            setBgImage(clearSkyimg);
+          } else if (data.weather[0].description === "few clouds") {
+            setBgImage(fewClouds);
+          } else if (data.weather[0].description === "scattered clouds") {
+            setBgImage(scatteredClouds);
+          } else if (data.weather[0].description === "broken clouds") {
+            setBgImage(brokenCLouds);
+          } else if (
+            data.weather[0].description === "shower rain" ||
+            data.weather[0].description === "rain" ||
+            data.weather[0].description === "light rain"
+          ) {
+            setBgImage(rainImg);
+          } else if (data.weather[0].description === "thunderstorm") {
+            setBgImage(ThunderStorm);
+          } else if (data.weather[0].description === "snow") {
+            setBgImage(snowBg);
+          } else if (data.weather[0].description === "overcast clouds") {
+            setBgImage(overcast);
+          }
         })
         .catch((err) => {
-          setError(err.message);
+          // setError(err.message);
+          console.log(err.message);
         });
     }
   };
@@ -54,7 +91,7 @@ const Weather = () => {
     <>
       <div className="Imgcontainer">
         <img
-          src="mainBG.jpg"
+          src={bgImage}
           alt="background image"
           style={{ width: "100%", height: "100vh" }}
         />
@@ -106,29 +143,34 @@ const Weather = () => {
           <p>
             Humidity: <span className="humidity">NA</span>
           </p>
+          <p className="description"></p>
           {error && <div style={{ color: "red" }}>{error}</div>}
         </div>
 
-        <div className="weatherCondition top-16 absolute">
+        {/* icon div */}
+        {/* 
+        <div className="weatherCondition top-28 absolute">
           <img
-            src="https://ouch-cdn2.icons8.com/Z6bj6JFgd5lCkM6aQ1gKouPHx4zzNC6qa50DgEhmbfc/rs:fit:368:367/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMjUz/LzYyZDYwNTc4LTEw/NTQtNGQ3OS1hZTg4/LWZiM2YwMjgwNGZl/Zi5wbmc.png"
+            src={scatteredClouds}
             alt="weather condition png"
-            width={"76%"}
+            width={"100%"}
           />
-        </div>
+        </div> */}
+
+        {/* location icon */}
         {/* <div
-          className="w-16 float-right absolute top-80"
-          style={{ marginLeft: "75%" }}
+          className="w-16 float-right absolute "
+          style={{ marginLeft: "74%", top: "378px" }}
         >
           <img
-            src="https://ouch-cdn2.icons8.com/17GI6BQh_m0SygFeleH30VYE2F8Q31HFHyZ06gcA3J0/rs:fit:368:427/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMTA3/L2I1NTQyYzg0LWQ1/NjEtNDJiMi05ZWYw/LWQ3NmFhZGUzZTYy/YS5wbmc.png"
+            src="https://ouch-cdn2.icons8.com/1TA-nksr7dwcozC73YLJRJW3QsidV7Qig-d1HTddVDE/rs:fit:368:602/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMTg0/LzgwNWNmZTczLTgz/NmYtNDMyMy1iNWU3/LTNjMTFhMWEzNjRi/Ni5wbmc.png"
             alt="location icon"
-            width={"100%"}
+            width={"40%"}
           />
         </div> */}
         <span
           className="absolute top-96 text-4xl text-white"
-          style={{ marginLeft: "77%" }}
+          style={{ marginLeft: "80%" }}
         >
           <span className="currentcity">CITY</span>
         </span>
