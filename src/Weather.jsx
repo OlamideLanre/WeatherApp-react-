@@ -36,13 +36,14 @@ const Weather = () => {
         .then((response) => {
           if (response.ok) {
             return response.json();
+          } else if (response.status === 404) {
+            throw Error(`City '${city}' does not exist`);
+          } else {
+            throw Error("Something went wrong");
           }
-          //  else {
-          //   throw Error("something went wrong");
-          // }
         })
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setError(null);
 
           let Temperature = document.getElementsByClassName("temprature");
@@ -69,7 +70,8 @@ const Weather = () => {
           } else if (
             data.weather[0].description === "shower rain" ||
             data.weather[0].description === "rain" ||
-            data.weather[0].description === "light rain"
+            data.weather[0].description === "light rain" ||
+            data.weather[0].description === "moderate rain"
           ) {
             setBgImage(rainImg);
           } else if (data.weather[0].description === "thunderstorm") {
@@ -81,7 +83,11 @@ const Weather = () => {
           }
         })
         .catch((err) => {
-          // setError(err.message);
+          setError(err.message);
+          setTimeout(() => {
+            setError("");
+          }, 6000);
+
           console.log(err.message);
         });
     }
@@ -144,7 +150,11 @@ const Weather = () => {
             Humidity: <span className="humidity">NA</span>
           </p>
           <p className="description"></p>
-          {error && <div style={{ color: "red" }}>{error}</div>}
+          {error && (
+            <div style={{ color: "red" }} className="text-1xl">
+              {error}
+            </div>
+          )}
         </div>
 
         {/* icon div */}
