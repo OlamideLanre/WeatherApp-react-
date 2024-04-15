@@ -26,3 +26,48 @@
  .weatherCondition{
     margin-left: 80%;
  }
+ .CurrentCity{
+    margin-left: 80%;
+ }
+
+ /* phone */
+ @media (min-width: 375px) and (max-width: 500px) {
+    .CurrentCity{
+        margin-left: 74px;
+        top: 75%;
+    }
+    .image{
+       object-fit: cover;
+    }
+ }
+
+ /* tablet */
+ @media (min-width: 500px) and (max-width: 820px) {
+     .CurrentCity {
+         margin-left: 70%;
+         font-size: 35px;
+         /* top: 75%; */
+     }
+     p{
+        font-size: 24px;
+        margin-top: 7px;
+     }
+     input{
+        margin-top: 17px;
+        padding-left: 45px;
+        padding-right: 45px;
+     }
+     .cityInput{
+        margin-top: 15px;
+     }
+    .SearchIconDiv {
+        top: 119px;
+        
+    }
+    .tempClass{
+        margin-top: 30px;
+    }
+     .image {
+         object-fit: cover;
+     }
+ }
