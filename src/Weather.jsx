@@ -30,6 +30,7 @@ const Weather = () => {
   const handleSearch = () => {
     const cityInput = document.getElementsByClassName("cityInput");
     if (cityInput.value === "") {
+      console.log("city input is empty");
       return 0;
     } else {
       fetch(REQUEST_URL)
@@ -38,6 +39,8 @@ const Weather = () => {
             return response.json();
           } else if (response.status === 404) {
             throw Error(`City '${city}' does not exist`);
+          } else if (response.status === 400) {
+            throw Error("Enter a city!");
           } else {
             throw Error("Something went wrong");
           }
@@ -84,11 +87,6 @@ const Weather = () => {
         })
         .catch((err) => {
           setError(err.message);
-          setTimeout(() => {
-            setError("");
-          }, 6000);
-
-          console.log(err.message);
         });
     }
   };
@@ -97,6 +95,7 @@ const Weather = () => {
     <>
       <div className="Imgcontainer">
         <img
+          className="image"
           src={bgImage}
           alt="background image"
           style={{ width: "100%", height: "100vh" }}
@@ -114,7 +113,7 @@ const Weather = () => {
         </span>
         <input
           placeholder="Enter City Name"
-          className="absolute top-24 ml-10 text-black px-10 py-2 rounded-md outline-none"
+          className="absolute top-24 ml-10 text-black px-10 py-2 rounded-md outline-none py"
           value={city}
           onChange={(e) => {
             setCity(e.target.value);
@@ -133,8 +132,8 @@ const Weather = () => {
           />
         </div>
 
-        <div className="absolute mt-11 text-white top-32 ml-10">
-          <h1 className=" text-8xl ">
+        <div className="absolute mt-11 text-white top-32 ml-10 ">
+          <h1 className=" text-8xl tempClass ">
             <span className="temprature">NA</span>
             <span>&#176;C</span>
           </h1>
@@ -151,37 +150,12 @@ const Weather = () => {
           </p>
           <p className="description"></p>
           {error && (
-            <div style={{ color: "red" }} className="text-1xl">
+            <div style={{ color: "red" }} className="text-1xl errMsg">
               {error}
             </div>
           )}
         </div>
-
-        {/* icon div */}
-        {/* 
-        <div className="weatherCondition top-28 absolute">
-          <img
-            src={scatteredClouds}
-            alt="weather condition png"
-            width={"100%"}
-          />
-        </div> */}
-
-        {/* location icon */}
-        {/* <div
-          className="w-16 float-right absolute "
-          style={{ marginLeft: "74%", top: "378px" }}
-        >
-          <img
-            src="https://ouch-cdn2.icons8.com/1TA-nksr7dwcozC73YLJRJW3QsidV7Qig-d1HTddVDE/rs:fit:368:602/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvMTg0/LzgwNWNmZTczLTgz/NmYtNDMyMy1iNWU3/LTNjMTFhMWEzNjRi/Ni5wbmc.png"
-            alt="location icon"
-            width={"40%"}
-          />
-        </div> */}
-        <span
-          className="absolute top-96 text-4xl text-white"
-          style={{ marginLeft: "80%" }}
-        >
+        <span className="absolute top-96 text-4xl text-white CurrentCity font-bold tracking-widest">
           <span className="currentcity">CITY</span>
         </span>
       </div>
