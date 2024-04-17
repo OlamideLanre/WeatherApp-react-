@@ -7,6 +7,7 @@
     margin: 0%;
     padding: 0%;
     font-family: "Poppins", sans-serif;
+    /* color: black; */
 }
 .Imgcontainer{
     position: relative;
@@ -27,15 +28,24 @@
     margin-left: 80%;
  }
  .CurrentCity{
-    margin-left: 80%;
+    margin-left: 42px;
+    top: 75%;
  }
-
+ .errMsg {
+     margin-top: 16px;
+     font-size: 20px;
+ }
  /* phone */
  @media (min-width: 375px) and (max-width: 500px) {
     .CurrentCity{
-        margin-left: 74px;
+        /* margin-left: 74px; */
         top: 75%;
     }
+
+        .errMsg {
+            margin-top: 20px;
+            font-size: 18px;
+        }
     .image{
        object-fit: cover;
     }
@@ -44,9 +54,13 @@
  /* tablet */
  @media (min-width: 500px) and (max-width: 820px) {
      .CurrentCity {
-         margin-left: 70%;
+         /* margin-left: 70%; */
          font-size: 35px;
-         /* top: 75%; */
+         top: 84%;
+     }
+     .errMsg{
+        margin-top: 5px;
+        font-size: 16px;
      }
      p{
         font-size: 24px;
