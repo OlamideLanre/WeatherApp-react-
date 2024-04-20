@@ -27,67 +27,58 @@ const Weather = () => {
   let snowBg = "snowBG.jpg";
   let overcast = "overcastBG.avif";
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const cityInput = document.getElementsByClassName("cityInput");
     if (cityInput.value === "") {
       console.log("city input is empty");
       return 0;
     } else {
-      fetch(REQUEST_URL)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else if (response.status === 404) {
-            throw Error(`City '${city}' does not exist`);
-          } else if (response.status === 400) {
-            throw Error("Enter a city!");
-          } else {
-            throw Error("Something went wrong");
-          }
-        })
-        .then((data) => {
-          // console.log(data);
-          setError(null);
+      let response = await fetch(REQUEST_URL);
+      let data = await response.json();
 
-          let Temperature = document.getElementsByClassName("temprature");
-          let Feelslike = document.getElementsByClassName("feelslike");
-          let wind = document.getElementsByClassName("clouds");
-          let Humidity = document.getElementsByClassName("humidity");
-          let City_Name = document.getElementsByClassName("currentcity");
-          let description = document.getElementsByClassName("description");
-          Temperature[0].innerHTML = Math.floor(data.main.temp - 273.15);
-          Feelslike[0].innerHTML = Math.floor(data.main.feels_like - 273.15);
-          wind[0].innerHTML = data.wind.speed + " km/h";
-          Humidity[0].innerHTML = data.main.humidity + " %";
-          City_Name[0].innerHTML = data.name + " " + data.sys.country;
-          description[0].innerHTML = data.weather[0].description;
+      if (response.ok) {
+        let Temperature = document.getElementsByClassName("temprature");
+        let Feelslike = document.getElementsByClassName("feelslike");
+        let wind = document.getElementsByClassName("clouds");
+        let Humidity = document.getElementsByClassName("humidity");
+        let City_Name = document.getElementsByClassName("currentcity");
+        let description = document.getElementsByClassName("description");
+        Temperature[0].innerHTML = Math.floor(data.main.temp - 273.15);
+        Feelslike[0].innerHTML = Math.floor(data.main.feels_like - 273.15);
+        wind[0].innerHTML = data.wind.speed + " km/h";
+        Humidity[0].innerHTML = data.main.humidity + " %";
+        City_Name[0].innerHTML = data.name + " " + data.sys.country;
+        description[0].innerHTML = data.weather[0].description;
 
-          if (data.weather[0].description === "clear sky") {
-            setBgImage(clearSkyimg);
-          } else if (data.weather[0].description === "few clouds") {
-            setBgImage(fewClouds);
-          } else if (data.weather[0].description === "scattered clouds") {
-            setBgImage(scatteredClouds);
-          } else if (data.weather[0].description === "broken clouds") {
-            setBgImage(brokenCLouds);
-          } else if (
-            data.weather[0].description === "shower rain" ||
-            data.weather[0].description === "rain" ||
-            data.weather[0].description === "light rain" ||
-            data.weather[0].description === "moderate rain"
-          ) {
-            setBgImage(rainImg);
-          } else if (data.weather[0].description === "thunderstorm") {
-            setBgImage(ThunderStorm);
-          } else if (data.weather[0].description === "snow") {
-            setBgImage(snowBg);
-          } else if (data.weather[0].description === "overcast clouds") {
-            setBgImage(overcast);
-          }
-        })
-        .catch((err) => {
-          setError(err.message);
-        });
+        if (data.weather[0].icon === "01d") {
+          setBgImage(clearSkyimg);
+        } else if (data.weather[0].icon === "02d") {
+          setBgImage(fewClouds);
+        } else if (data.weather[0].description === "03d") {
+          setBgImage(scatteredClouds);
+        } else if (data.weather[0].description === "04d") {
+          setBgImage(brokenCLouds);
+        } else if (
+          data.weather[0].icon === "09d" ||
+          data.weather[0].icon === "10d"
+        ) {
+          setBgImage(rainImg);
+        } else if (data.weather[0].description === "11d") {
+          setBgImage(ThunderStorm);
+        } else if (data.weather[0].description === "13d") {
+          setBgImage(snowBg);
+        } else if (data.weather[0].description === "overcast clouds") {
+          setBgImage(overcast);
+        }
+
+        setError(null);
+      } else if (response.status === 404) {
+        setError(`City '${city}' does not exist`);
+      } else if (response.status === 400) {
+        setError("Enter a city!");
+      } else {
+        setError("Something went wrong..Try again");
+      }
     }
   };
 
