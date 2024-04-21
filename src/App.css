@@ -36,7 +36,7 @@
      font-size: 20px;
  }
  /* phone */
- @media (min-width: 375px) and (max-width: 500px) {
+ @media (min-width: 350px) and (max-width: 500px) {
     .CurrentCity{
         /* margin-left: 74px; */
         top: 75%;
@@ -50,9 +50,57 @@
        object-fit: cover;
     }
  }
+/* samsung fold */
+  /* @media (max-width: 349px){
+      .CurrentCity {
+          
+          top: 75%;
+      }
+
+      .header{
+        margin-left: 20px;
+        font-size: 30px;
+        
+      }
+      .date{
+        font-size: 10px;
+        margin-left: 63%;
+        margin-bottom: 7px;
+        
+      }
+      .cityInput, .inputField, .CurrentCity {
+        margin-left: 10%;
+      }
+
+      .inputField{
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 230px;
+      }
+
+      .SearchIconDiv{
+        margin-left: -60px;
+      }
+
+      .errMsg {
+          margin-top: 20px;
+          font-size: 18px;
+      }
+
+      .image {
+          object-fit: cover;
+      }
+      .tempClass{
+        margin-left: -10px;
+        font-size: 72px;
+      }
+      .CurrentCity{
+        font-size: 33px;
+      }
+  } */
 
  /* tablet */
- @media (min-width: 500px) and (max-width: 820px) {
+ @media (min-width: 500px) and (max-width: 1024px) {
      .CurrentCity {
          /* margin-left: 70%; */
          font-size: 35px;
@@ -84,4 +132,15 @@
      .image {
          object-fit: cover;
      }
+ }
+
+ @media (min-width: 820px) and (max-width: 912px) {
+  
+
+     p {
+         font-size: 24px;
+         margin-top: 7px;
+     }
+
+    
  }
