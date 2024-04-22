@@ -7,13 +7,11 @@
     margin: 0%;
     padding: 0%;
     font-family: "Poppins", sans-serif;
-    /* color: black; */
 }
 .Imgcontainer{
     position: relative;
     height: 100vh;
     width: 100%;
-    /* background-color: black; */
 }
 .weather{
     position: absolute;
@@ -34,7 +32,10 @@
  .errMsg {
      margin-top: 16px;
      font-size: 20px;
+     
  }
+
+ /* MEDIA QUERY */
  /* phone */
  @media (min-width: 350px) and (max-width: 500px) {
     .CurrentCity{
@@ -49,9 +50,13 @@
     .image{
        object-fit: cover;
     }
+
+    .cityInput{
+        margin-top: 8px;
+    }
  }
 /* samsung fold */
-  /* @media (max-width: 349px){
+  @media (max-width: 349px){
       .CurrentCity {
           
           top: 75%;
@@ -95,9 +100,10 @@
         font-size: 72px;
       }
       .CurrentCity{
+        top: 75%;
         font-size: 33px;
       }
-  } */
+  }
 
  /* tablet */
  @media (min-width: 500px) and (max-width: 1024px) {
@@ -114,13 +120,14 @@
         font-size: 24px;
         margin-top: 7px;
      }
-     input{
-        margin-top: 17px;
+     .inputField{
+        margin-top: 20px;
         padding-left: 45px;
         padding-right: 45px;
      }
      .cityInput{
-        margin-top: 15px;
+        margin-top: 3%;
+        font-size: 16px;
      }
     .SearchIconDiv {
         top: 119px;
@@ -132,15 +139,10 @@
      .image {
          object-fit: cover;
      }
- }
-
- @media (min-width: 820px) and (max-width: 912px) {
-  
-
-     p {
-         font-size: 24px;
-         margin-top: 7px;
+     .header{
+            margin-bottom: 10px;
      }
-
-    
+     .textDiv p{
+        font-size: 30px;
+     }
  }
