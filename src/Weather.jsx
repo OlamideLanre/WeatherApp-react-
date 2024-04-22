@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 
 const Weather = () => {
-  const [currentDate, setCurrentDate] = useState(getDate());
   const [city, setCity] = useState("");
   const [error, setError] = useState(null);
   const [bgImage, setBgImage] = useState("mainBG.jpg");
   const API_KEY = "f354b189aaf77a355d65e2f002046f0b";
   const REQUEST_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
 
-  function getDate() {
-    const todaysDate = new Date();
-    const month = todaysDate.getMonth() + 1;
-    const dateOfWeek = todaysDate.getDate();
-    const year = todaysDate.getFullYear();
+  // GET DATE FUNCTION
+  //const [currentDate, setCurrentDate] = useState(getDate());
+  // function getDate() {
+  //   const todaysDate = new Date();
+  //   const month = todaysDate.getMonth() + 1;
+  //   const dateOfWeek = todaysDate.getDate();
+  //   const year = todaysDate.getFullYear();
 
-    return `${dateOfWeek}/${month}/${year}`;
-  }
+  //   return `${dateOfWeek}/${month}/${year}`;
+  // }
 
   // SETTING BACKGROUND IMAGES
   let clearSkyimg = "mainBG.jpg";
@@ -35,6 +36,8 @@ const Weather = () => {
     } else {
       let response = await fetch(REQUEST_URL);
       let data = await response.json();
+
+      console.log(data);
 
       if (response.ok) {
         let Temperature = document.getElementsByClassName("temprature");
@@ -92,19 +95,19 @@ const Weather = () => {
           style={{ width: "100%", height: "100vh" }}
         />
 
-        <p className="weather text-4xl font-semibold tracking-widest text-white ml-10 italic">
+        <p className="weather header text-4xl tracking-widest text-white ml-10 italic ">
           Weather
         </p>
-
-        <p className="weather text-1xl font-semibold tracking-widest text-white italic ml-60">
+        {/* GET DATE FUNCTION DISPLAY */}
+        {/* <p className="weather date text-1xl font-semibold tracking-widest text-white italic ml-60">
           {currentDate}
-        </p>
+        </p> */}
         <span className="cityInput weather top-16 ml-10 ">
           Search for a new city
         </span>
         <input
           placeholder="Enter City Name"
-          className="absolute top-24 ml-10 text-black px-10 py-2 rounded-md outline-none py"
+          className="absolute top-24 ml-10 text-black px-10 py-2 rounded-md outline-none py inputField"
           value={city}
           onChange={(e) => {
             setCity(e.target.value);
@@ -123,8 +126,8 @@ const Weather = () => {
           />
         </div>
 
-        <div className="absolute mt-11 text-white top-32 ml-10 ">
-          <h1 className=" text-8xl tempClass ">
+        <div className="absolute mt-11 text-white top-32 ml-10 textDiv ">
+          <h1 className=" text-8xl tempClass  ">
             <span className="temprature">NA</span>
             <span>&#176;C</span>
           </h1>
@@ -146,7 +149,7 @@ const Weather = () => {
             </div>
           )}
         </div>
-        <span className="absolute top-96 text-4xl text-white CurrentCity font-bold tracking-widest">
+        <span className="absolute top-96 text-4xl text-white CurrentCity tracking-widest">
           <span className="currentcity">CITY</span>
         </span>
       </div>
