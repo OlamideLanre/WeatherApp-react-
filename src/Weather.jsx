@@ -104,7 +104,7 @@ const Weather = () => {
         <label className="input input-bordered flex items-center gap-2 absolute top-10 ml-5">
           <input
             type="text"
-            className="grow px-10 py-2 rounded-md outline-none"
+            className="px-5 py-2 rounded-md outline-none"
             placeholder="Search"
             value={city}
             onChange={(e) => {
