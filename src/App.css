@@ -13,136 +13,21 @@
     height: 100vh;
     width: 100%;
 }
-.weather{
-    position: absolute;
-    bottom: 92%;
+.container{
+    top: 6em;
+    /* text-align: center; */
+    /* left: 50%;
+    transform: translateX(-50%); */
 }
- .SearchIconDiv{
-    top: 103px;
-    margin-left: 3px;
- }
-
- .weatherCondition{
-    margin-left: 80%;
- }
- .CurrentCity{
-    margin-left: 42px;
-    top: 75%;
- }
+.content{
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(1px);
+    max-width: 500px;
+    border-radius: 2em;
+}
  .errMsg {
      margin-top: 16px;
-     font-size: 20px;
-     
+     font-size: 20px; 
  }
 
- /* MEDIA QUERY */
- /* phone */
- @media (min-width: 350px) and (max-width: 500px) {
-    .CurrentCity{
-        /* margin-left: 74px; */
-        top: 75%;
-    }
 
-        .errMsg {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    .image{
-       object-fit: cover;
-    }
-
-    .cityInput{
-        margin-top: 8px;
-    }
- }
-/* samsung fold */
-  @media (max-width: 349px){
-      .CurrentCity {
-          
-          top: 75%;
-      }
-
-      .header{
-        margin-left: 20px;
-        font-size: 30px;
-        
-      }
-      .date{
-        font-size: 10px;
-        margin-left: 63%;
-        margin-bottom: 7px;
-        
-      }
-      .cityInput, .inputField, .CurrentCity {
-        margin-left: 10%;
-      }
-
-      .inputField{
-        padding-left: 20px;
-        padding-right: 20px;
-        width: 230px;
-      }
-
-      .SearchIconDiv{
-        margin-left: -60px;
-      }
-
-      .errMsg {
-          margin-top: 20px;
-          font-size: 18px;
-      }
-
-      .image {
-          object-fit: cover;
-      }
-      .tempClass{
-        margin-left: -10px;
-        font-size: 72px;
-      }
-      .CurrentCity{
-        top: 75%;
-        font-size: 33px;
-      }
-  }
-
- /* tablet */
- @media (min-width: 500px) and (max-width: 1024px) {
-     .CurrentCity {
-         /* margin-left: 70%; */
-         font-size: 35px;
-         top: 84%;
-     }
-     .errMsg{
-        margin-top: 5px;
-        font-size: 16px;
-     }
-     p{
-        font-size: 24px;
-        margin-top: 7px;
-     }
-     .inputField{
-        margin-top: 20px;
-        padding-left: 45px;
-        padding-right: 45px;
-     }
-     .cityInput{
-        margin-top: 3%;
-        font-size: 16px;
-     }
-    .SearchIconDiv {
-        top: 119px;
-        
-    }
-    .tempClass{
-        margin-top: 30px;
-    }
-     .image {
-         object-fit: cover;
-     }
-     .header{
-            margin-bottom: 10px;
-     }
-     .textDiv p{
-        font-size: 30px;
-     }
- }
