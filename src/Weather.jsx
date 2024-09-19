@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Modal from "./component/Modal";
 
 const Weather = () => {
   const [city, setCity] = useState("");
@@ -6,6 +7,11 @@ const Weather = () => {
   const [bgImage, setBgImage] = useState("mainBG.jpg");
   const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
   const REQUEST_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
+  const [modal, setModal] = useState({
+    isError: false,
+    msg: "",
+    header: "",
+  });
   let LATITUDE;
   let LONGITUDE;
   // GET DATE FUNCTION
@@ -92,11 +98,24 @@ const Weather = () => {
         displayData(data);
         setError(false);
       } else if (response.status === 404) {
-        setError(`City '${city}' does not exist`);
+        setModal({
+          isError: true,
+          msg: `City '${city}' does not exist`,
+          header: "CITY DOES NOT EXIST",
+        });
+        // setError(`City '${city}' does not exist`);
       } else if (response.status === 400) {
-        setError("Enter a city!");
+        setModal({
+          isError: true,
+          msg: `please enter a city!`,
+          header: "INPUT FIELD CANNOT BE EMPTY",
+        });
       } else {
-        setError("Something went wrong..Try again");
+        setModal({
+          isError: true,
+          msg: `Try again later`,
+          header: "AN ERROR OCCURED",
+        });
       }
     }
   };
@@ -109,6 +128,14 @@ const Weather = () => {
       );
     });
   });
+
+  const closeModal = () => {
+    setModal({
+      isError: false,
+      msg: "",
+      header: "",
+    });
+  };
 
   return (
     <>
@@ -174,11 +201,16 @@ const Weather = () => {
             </p>
           </div>
 
-          {error && (
+          {/* {error && (
             <div style={{ color: "red" }} className="text-1xl errMsg">
               {error}
             </div>
-          )}
+          )} */}
+          {modal.isError ? (
+            <div>
+              <Modal modal={modal} onClose={closeModal} />
+            </div>
+          ) : null}
         </div>
       </div>
     </>
