@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const Weather = () => {
   const [city, setCity] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState();
   const [bgImage, setBgImage] = useState("mainBG.jpg");
   // const [weatherData, setWeatherData] = useState();
   const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
@@ -80,7 +80,7 @@ const Weather = () => {
           setBgImage(overcast);
         }
 
-        setError(null);
+        setError(false);
       } else if (response.status === 404) {
         setError(`City '${city}' does not exist`);
       } else if (response.status === 400) {
@@ -101,11 +101,12 @@ const Weather = () => {
           alt="background image"
           style={{ width: "100%", height: "100vh" }}
         />
+
         <label className="input input-bordered flex items-center gap-2 absolute top-10 ml-5">
           <input
             type="text"
-            className="px-5 py-2 rounded-md outline-none"
-            placeholder="Search"
+            className="px-5 py-2 rounded-md outline-none grow"
+            placeholder="Enter city name"
             value={city}
             onChange={(e) => {
               setCity(e.target.value);

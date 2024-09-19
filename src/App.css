@@ -27,5 +27,8 @@
      margin-top: 16px;
      font-size: 20px; 
  }
-
+input{
+    width: 100%;
+    box-sizing: border-box;
+}
 
