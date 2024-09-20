@@ -3,7 +3,8 @@ import Modal from "./component/Modal";
 
 const Weather = () => {
   const [city, setCity] = useState("");
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
+  const [activeSearch, setActiveSearch] = useState(false);
   const [bgImage, setBgImage] = useState("mainBG.jpg");
   const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
   const REQUEST_URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
@@ -73,7 +74,7 @@ const Weather = () => {
     }
   };
 
-  const getCurrentLocation = async (URL) => {
+  const fetchByLocation = async (URL) => {
     try {
       const response = await fetch(URL);
       const data = await response.json();
@@ -85,12 +86,29 @@ const Weather = () => {
     }
   };
 
-  const handleSearch = async () => {
+  const getCurrentLocation = () => {
+    if (!activeSearch) {
+      navigator.geolocation.watchPosition((position) => {
+        LATITUDE = position.coords.latitude;
+        LONGITUDE = position.coords.longitude;
+        fetchByLocation(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
+        );
+        console.log("fetching weather by current location");
+      });
+    } else {
+      console.log("!fetching weather by current location");
+    }
+  };
+
+  const searchByCity = async () => {
     const cityInput = document.getElementsByClassName("cityInput");
     if (cityInput.value === "") {
       console.log("city input is empty");
       return 0;
     } else {
+      setActiveSearch(true);
+      console.log("fetching weather by searched city");
       let response = await fetch(REQUEST_URL);
       let data = await response.json();
 
@@ -120,14 +138,8 @@ const Weather = () => {
     }
   };
   useEffect(() => {
-    navigator.geolocation.watchPosition((position) => {
-      LATITUDE = position.coords.latitude;
-      LONGITUDE = position.coords.longitude;
-      getCurrentLocation(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
-      );
-    });
-  });
+    getCurrentLocation();
+  }, []);
 
   const closeModal = () => {
     setModal({
@@ -158,7 +170,7 @@ const Weather = () => {
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleSearch();
+                searchByCity();
               }
             }}
           />
@@ -167,7 +179,7 @@ const Weather = () => {
             viewBox="0 0 16 16"
             fill="currentColor"
             className="h-4 w-4 opacity-70"
-            onClick={handleSearch}
+            onClick={searchByCity}
           >
             <path
               fillRule="evenodd"
