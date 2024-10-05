@@ -108,6 +108,7 @@ const Weather = () => {
   const searchByCity = async () => {
     const cityInput = document.getElementsByClassName("cityInput");
     if (cityInput.value === "") {
+      setActiveSearch(false);
       console.log("city input is empty");
       return 0;
     } else {
