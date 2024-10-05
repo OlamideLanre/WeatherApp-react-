@@ -114,7 +114,6 @@ const Weather = () => {
 
       if (response.ok) {
         displayData(data);
-        setError(false);
       } else if (response.status === 404) {
         setModal({
           isError: true,
@@ -138,8 +137,15 @@ const Weather = () => {
     }
   };
   useEffect(() => {
-    getCurrentLocation();
-  }, []);
+    if (!activeSearch) {
+      getCurrentLocation();
+    }
+
+    return () => {
+      // Clean up to prevent unnecessary calls
+      setActiveSearch(false);
+    };
+  }, [activeSearch]);
 
   const closeModal = () => {
     setModal({
