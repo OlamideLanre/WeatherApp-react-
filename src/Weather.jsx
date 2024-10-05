@@ -95,7 +95,7 @@ const Weather = () => {
           fetchByLocation(
             `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
           );
-          console.log("fetching weather by current location");
+          // console.log("fetching weather by current location");
         });
       } else {
         console.log("!fetching weather by current location");
@@ -109,12 +109,10 @@ const Weather = () => {
     const cityInput = document.getElementsByClassName("cityInput");
     if (cityInput.value === "") {
       console.log("city input is empty");
-      setActiveSearch(false);
-      getCurrentLocation();
-      // return 0;
+      return 0;
     } else {
       setActiveSearch(true);
-      console.log("fetching weather by searched city");
+      // console.log("fetching weather by searched city");
       let response = await fetch(REQUEST_URL);
       let data = await response.json();
 
@@ -126,7 +124,6 @@ const Weather = () => {
           msg: `City '${city}' does not exist`,
           header: "CITY DOES NOT EXIST",
         });
-        // setError(`City '${city}' does not exist`);
       } else if (response.status === 400) {
         setModal({
           isError: true,
@@ -142,14 +139,9 @@ const Weather = () => {
       }
     }
   };
-  useEffect(() => {
-    // if (!activeSearch) {
-    getCurrentLocation();
-    // }
 
-    // return () => {
-    //   setActiveSearch(false);
-    // };
+  useEffect(() => {
+    getCurrentLocation();
   }, []);
 
   const closeModal = () => {
@@ -219,7 +211,7 @@ const Weather = () => {
               Humidity: <span className="humidity">NA</span>
             </p>
             <p className="description"></p>
-            <p className="weather date text-1xl tracking-widest text-blue-400">
+            <p className="weather date text-1xl tracking-widest text-blue-700">
               {currentDate}
             </p>
           </div>
@@ -229,6 +221,17 @@ const Weather = () => {
             </div>
           ) : null}
         </div>
+        <p
+          onClick={() => {
+            setActiveSearch(false);
+            getCurrentLocation();
+            console.log("current location text to the rescuse");
+            console.log("active search: " + activeSearch);
+          }}
+          className="font-semibold underline absolute bottom-1 ml-3"
+        >
+          current location
+        </p>
       </div>
     </>
   );

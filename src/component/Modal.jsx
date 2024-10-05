@@ -12,7 +12,10 @@ const Modal = ({ modal, onClose }) => {
   return (
     <div>
       {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+      <dialog
+        id="my_modal_5"
+        className="modal modal-bottom sm:modal-middle p-5 rounded-md"
+      >
         <div className="modal-box">
           <h3 className="font-bold text-lg text-blue-400">{modal.header}</h3>
           <p className="py-4">{modal.msg}</p>
