@@ -89,20 +89,21 @@ const Weather = () => {
   const getCurrentLocation = () => {
     try {
       if (!activeSearch) {
-        navigator.geolocation.watchPosition((position) => {
-          LATITUDE = position.coords.latitude;
-          LONGITUDE = position.coords.longitude;
-          fetchByLocation(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
-          );
-          console.log("fetching weather by current location");
+        navigator.geolocation.watchPosition(
+          (position) => {
+            LATITUDE = position.coords.latitude;
+            LONGITUDE = position.coords.longitude;
+            fetchByLocation(
+              `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
+            );
+            console.log("fetching weather by current location");
+          },
           {
-            enableHighAccuracy;
-            true, timeout;
-            5000, maximumAge;
-            0;
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0,
           }
-        });
+        );
       } else {
         console.log("!fetching weather by current location");
       }
