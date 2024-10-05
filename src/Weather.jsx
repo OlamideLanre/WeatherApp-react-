@@ -108,9 +108,10 @@ const Weather = () => {
   const searchByCity = async () => {
     const cityInput = document.getElementsByClassName("cityInput");
     if (cityInput.value === "") {
-      setActiveSearch(false);
       console.log("city input is empty");
-      return 0;
+      setActiveSearch(false);
+      getCurrentLocation();
+      // return 0;
     } else {
       setActiveSearch(true);
       console.log("fetching weather by searched city");
@@ -222,12 +223,6 @@ const Weather = () => {
               {currentDate}
             </p>
           </div>
-
-          {/* {error && (
-            <div style={{ color: "red" }} className="text-1xl errMsg">
-              {error}
-            </div>
-          )} */}
           {modal.isError ? (
             <div>
               <Modal modal={modal} onClose={closeModal} />
