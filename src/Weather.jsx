@@ -89,21 +89,14 @@ const Weather = () => {
   const getCurrentLocation = () => {
     try {
       if (!activeSearch) {
-        navigator.geolocation.watchPosition(
-          (position) => {
-            LATITUDE = position.coords.latitude;
-            LONGITUDE = position.coords.longitude;
-            fetchByLocation(
-              `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
-            );
-            console.log("fetching weather by current location");
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0,
-          }
-        );
+        navigator.geolocation.getCurrentPosition((position) => {
+          LATITUDE = position.coords.latitude;
+          LONGITUDE = position.coords.longitude;
+          fetchByLocation(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
+          );
+          console.log("fetching weather by current location");
+        });
       } else {
         console.log("!fetching weather by current location");
       }
@@ -148,15 +141,14 @@ const Weather = () => {
     }
   };
   useEffect(() => {
-    if (!activeSearch) {
-      getCurrentLocation();
-    }
+    // if (!activeSearch) {
+    getCurrentLocation();
+    // }
 
-    return () => {
-      // Clean up to prevent unnecessary calls
-      setActiveSearch(false);
-    };
-  }, [activeSearch]);
+    // return () => {
+    //   setActiveSearch(false);
+    // };
+  }, []);
 
   const closeModal = () => {
     setModal({
