@@ -16,6 +16,15 @@ const Weather = () => {
   });
   let LATITUDE;
   let LONGITUDE;
+  // SETTING BACKGROUND IMAGES
+  let clearSkyimg = "mainBG.jpg";
+  let fewClouds = "fewCloudsBG.jpg";
+  let rainImg = "rainBG.jpg";
+  let ThunderStorm = "thunderstormBG.jpg";
+  let scatteredClouds = "scatteredCloudsBG.jpg";
+  let brokenCLouds = "brokenCloudsBG.jpg";
+  let snowBg = "snowBG.jpg";
+  let overcast = "overcastBG.avif";
   // GET DATE FUNCTION
   const [currentDate, setCurrentDate] = useState(getDate());
   function getDate() {
@@ -26,16 +35,6 @@ const Weather = () => {
 
     return `${dateOfWeek}/${month}/${year}`;
   }
-
-  // SETTING BACKGROUND IMAGES
-  let clearSkyimg = "mainBG.jpg";
-  let fewClouds = "fewCloudsBG.jpg";
-  let rainImg = "rainBG.jpg";
-  let ThunderStorm = "thunderstormBG.jpg";
-  let scatteredClouds = "scatteredCloudsBG.jpg";
-  let brokenCLouds = "brokenCloudsBG.jpg";
-  let snowBg = "snowBG.jpg";
-  let overcast = "overcastBG.avif";
 
   const displayData = (data) => {
     let Temperature = document.getElementsByClassName("temprature");
@@ -101,13 +100,14 @@ const Weather = () => {
             // console.log("fetching weather by current location");
           },
           (error) => {
+            setLocationError(true);
             if (error.code === error.PERMISSION_DENIED) {
-              setLocationError(true);
               setModal({
                 isError: true,
                 msg: "grant access so your location can be used",
                 header: "Location access denied",
               });
+              // console.log(locationError);
             } else {
               setModal({
                 isError: true,
@@ -124,10 +124,14 @@ const Weather = () => {
   };
 
   const searchByCity = async () => {
-    const cityInput = document.getElementsByClassName("cityInput");
+    const cityInput = document.querySelector(".cityInput");
 
-    if (cityInput.value === "") {
-      console.log("city input is empty");
+    if (cityInput.value.trim() === "") {
+      setModal({
+        isError: true,
+        msg: `please enter a city!`,
+        header: "INPUT FIELD CANNOT BE EMPTY",
+      });
       return 0;
     } else {
       setActiveSearch(true);
@@ -160,6 +164,37 @@ const Weather = () => {
     }
   };
 
+  // switching to current location after search
+  function useMyLocation() {
+    if (locationError) {
+      setUsingMyLocation(false);
+      setActiveSearch(true);
+      setModal({
+        isError: true,
+        msg: "kindly enable location",
+        header: "Location denied",
+      });
+    } else if (usingMyLocation) {
+      //if using my current location
+      setLocationError(false);
+      setModal({
+        isError: true,
+        msg: "your location is being used",
+        header: "",
+      });
+    } else {
+      //if not using my current location
+      setUsingMyLocation(false);
+      setModal({
+        isError: true,
+        msg: `Please wait...`,
+        header: "fetching your location..",
+      });
+    }
+    setActiveSearch(false);
+    // console.log("active search: " + activeSearch);
+  }
+
   useEffect(() => {
     if (!activeSearch) {
       getCurrentLocation();
@@ -173,33 +208,6 @@ const Weather = () => {
       header: "",
     });
   };
-
-  // switching to current location after search
-  function useMyLocation() {
-    if (usingMyLocation) {
-      setModal({
-        isError: true,
-        msg: "your location is being used",
-        header: "",
-      });
-    } else if (locationError) {
-      setUsingMyLocation(false);
-      setModal({
-        isError: true,
-        msg: "kindly enable location",
-        header: "Location denied",
-      });
-    } else {
-      setUsingMyLocation(false);
-      setModal({
-        isError: true,
-        msg: `Please wait...`,
-        header: "fetching your location..",
-      });
-    }
-    setActiveSearch(false);
-    // console.log("active search: " + activeSearch);
-  }
   return (
     <>
       <div className="Imgcontainer">
@@ -213,7 +221,7 @@ const Weather = () => {
         <label className="input input-bordered flex items-center gap-2 absolute top-10 ml-5">
           <input
             type="text"
-            className="px-5 py-2 rounded-md outline-none grow"
+            className="px-5 py-2 rounded-md outline-none grow cityInput"
             placeholder="Enter city name"
             value={city}
             onChange={(e) => {
