@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "./component/Modal";
 
 const Weather = () => {
+  const [locationError, setLocationError] = useState(false);
   const [city, setCity] = useState("");
   const [usingMyLocation, setUsingMyLocation] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
@@ -100,8 +101,8 @@ const Weather = () => {
             // console.log("fetching weather by current location");
           },
           (error) => {
-            setUsingMyLocation(false);
             if (error.code === error.PERMISSION_DENIED) {
+              setLocationError(true);
               setModal({
                 isError: true,
                 msg: "grant access so your location can be used",
@@ -180,6 +181,13 @@ const Weather = () => {
         isError: true,
         msg: "your location is being used",
         header: "",
+      });
+    } else if (locationError) {
+      setUsingMyLocation(false);
+      setModal({
+        isError: true,
+        msg: "kindly enable location",
+        header: "Location denied",
       });
     } else {
       setUsingMyLocation(false);
