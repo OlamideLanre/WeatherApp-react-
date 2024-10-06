@@ -3,7 +3,7 @@ import Modal from "./component/Modal";
 
 const Weather = () => {
   const [city, setCity] = useState("");
-  // const [error, setError] = useState();
+  const [usingMyLocation, setUsingMyLocation] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
   const [bgImage, setBgImage] = useState("mainBG.jpg");
   const API_KEY = import.meta.env.VITE_REACT_APP_API_KEY;
@@ -89,6 +89,7 @@ const Weather = () => {
   const getCurrentLocation = () => {
     try {
       if (!activeSearch) {
+        setUsingMyLocation(true);
         navigator.geolocation.getCurrentPosition((position) => {
           LATITUDE = position.coords.latitude;
           LONGITUDE = position.coords.longitude;
@@ -97,8 +98,6 @@ const Weather = () => {
           );
           // console.log("fetching weather by current location");
         });
-      } else {
-        console.log("!fetching weather by current location");
       }
     } catch (error) {
       console.error("Error getting location: ", error);
@@ -107,11 +106,13 @@ const Weather = () => {
 
   const searchByCity = async () => {
     const cityInput = document.getElementsByClassName("cityInput");
+
     if (cityInput.value === "") {
       console.log("city input is empty");
       return 0;
     } else {
       setActiveSearch(true);
+      setUsingMyLocation(false);
       // console.log("fetching weather by searched city");
       let response = await fetch(REQUEST_URL);
       let data = await response.json();
@@ -141,8 +142,10 @@ const Weather = () => {
   };
 
   useEffect(() => {
-    getCurrentLocation();
-  }, []);
+    if (!activeSearch) {
+      getCurrentLocation();
+    }
+  }, [activeSearch]);
 
   const closeModal = () => {
     setModal({
@@ -152,6 +155,25 @@ const Weather = () => {
     });
   };
 
+  // switching to current location after search
+  function useMyLocation() {
+    if (usingMyLocation) {
+      setModal({
+        isError: true,
+        msg: "your location is being used",
+        header: "",
+      });
+    } else {
+      setUsingMyLocation(false);
+      setModal({
+        isError: true,
+        msg: `Please wait...`,
+        header: "fetching your location..",
+      });
+    }
+    setActiveSearch(false);
+    // console.log("active search: " + activeSearch);
+  }
   return (
     <>
       <div className="Imgcontainer">
@@ -214,24 +236,17 @@ const Weather = () => {
             <p className="weather date text-1xl tracking-widest text-blue-700">
               {currentDate}
             </p>
+            <p onClick={useMyLocation} className="font-semibold underline">
+              My location
+            </p>
           </div>
+
           {modal.isError ? (
             <div>
               <Modal modal={modal} onClose={closeModal} />
             </div>
           ) : null}
         </div>
-        <p
-          onClick={() => {
-            setActiveSearch(false);
-            getCurrentLocation();
-            console.log("current location text to the rescuse");
-            console.log("active search: " + activeSearch);
-          }}
-          className="font-semibold underline absolute bottom-1 ml-3"
-        >
-          current location
-        </p>
       </div>
     </>
   );
