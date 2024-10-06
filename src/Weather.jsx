@@ -90,7 +90,6 @@ const Weather = () => {
     try {
       if (!activeSearch) {
         setUsingMyLocation(true);
-        setLocationError(false);
         navigator.geolocation.getCurrentPosition(
           (position) => {
             LATITUDE = position.coords.latitude;
@@ -186,6 +185,7 @@ const Weather = () => {
     } else {
       //if not using my current location
       setUsingMyLocation(false);
+      setLocationError(false);
       setModal({
         isError: true,
         msg: `Please wait...`,
@@ -193,7 +193,6 @@ const Weather = () => {
       });
     }
     setActiveSearch(false);
-    // console.log("active search: " + activeSearch);
   }
 
   useEffect(() => {
