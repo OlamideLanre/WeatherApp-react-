@@ -90,14 +90,31 @@ const Weather = () => {
     try {
       if (!activeSearch) {
         setUsingMyLocation(true);
-        navigator.geolocation.getCurrentPosition((position) => {
-          LATITUDE = position.coords.latitude;
-          LONGITUDE = position.coords.longitude;
-          fetchByLocation(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
-          );
-          // console.log("fetching weather by current location");
-        });
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            LATITUDE = position.coords.latitude;
+            LONGITUDE = position.coords.longitude;
+            fetchByLocation(
+              `https://api.openweathermap.org/data/2.5/weather?lat=${LATITUDE}&lon=${LONGITUDE}&appid=${API_KEY}`
+            );
+            // console.log("fetching weather by current location");
+          },
+          (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+              setModal({
+                isError: true,
+                msg: "grant access so your location can be used",
+                header: "Location access denied",
+              });
+            } else {
+              setModal({
+                isError: true,
+                msg: "Location is not enabled or available",
+                header: "Location unavailable",
+              });
+            }
+          }
+        );
       }
     } catch (error) {
       console.error("Error getting location: ", error);
