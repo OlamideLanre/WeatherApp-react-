@@ -100,6 +100,7 @@ const Weather = () => {
             // console.log("fetching weather by current location");
           },
           (error) => {
+            setUsingMyLocation(false);
             if (error.code === error.PERMISSION_DENIED) {
               setModal({
                 isError: true,
