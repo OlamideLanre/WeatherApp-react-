@@ -90,6 +90,7 @@ const Weather = () => {
     try {
       if (!activeSearch) {
         setUsingMyLocation(true);
+        setLocationError(false);
         navigator.geolocation.getCurrentPosition(
           (position) => {
             LATITUDE = position.coords.latitude;
